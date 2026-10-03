@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <title>Feliz cumpleaños Dani</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -283,22 +283,55 @@
         inset: 0;
         z-index: 3;
       }
+      body > .tiraFotografica {
+        position: absolute;
+        left: 19%;
+        top: 5%;
+        width: 7%;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-50%) translateY(14%) scale(0.9) rotate(-12deg);
+        transform-origin: center center;
+        transition:
+          transform 0.7s cubic-bezier(0.34, 1.15, 0.4, 1),
+          filter 0.45s ease,
+          opacity 0.5s ease,
+          visibility 0.5s ease;
+        z-index: 3;
+        box-shadow: 0 12px 20px rgba(40, 15, 8, 0.22);
+        border-radius: 4px;
+        pointer-events: none;
+      }
+      .page2.raised .letter {
+        z-index: 6;
+      }
+      body > .tiraFotografica.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(4%) scale(1.1) rotate(-8deg);
+      }
       .letter {
         position: absolute;
         left: 50%;
         top: 9%;
         width: 76%;
+        opacity: 0;
+        visibility: hidden;
         transform: translateX(-50%) translateY(17%) scale(0.8) rotate(-1deg);
         transform-origin: center center;
-        transition: transform 0.7s cubic-bezier(0.34, 1.15, 0.4, 1);
+        transition:
+          transform 0.7s cubic-bezier(0.34, 1.15, 0.4, 1),
+          filter 0.45s ease,
+          opacity 0.5s ease,
+          visibility 0.5s ease;
         z-index: 1;
         box-shadow: 0 12px 26px rgba(40, 15, 8, 0.4);
         border-radius: 3px;
       }
-      .page2.raised .letter {
-        z-index: 6;
-      }
       .page2.open .letter {
+        z-index: 5;
+        opacity: 1;
+        visibility: visible;
         transform: translateX(-50%) translateY(4%) scale(1.3) rotate(0deg);
       }
       .page2 img.letter {
@@ -596,29 +629,48 @@
         font-size: clamp(14px, 3.6vw, 18px);
         letter-spacing: 0.5px;
       }
-    </style>
+    
+/* A larger closed cover; the original open spread retains its exact sizing. */
+.stage { transform:scale(var(--cover-zoom,1)); transform-origin:center; transition:transform 1.6s cubic-bezier(.45,0,.2,1); animation:none; }
+body.card-open .stage { transform:scale(1); }
+.caption { translate:0 var(--caption-drop,0px); transition:translate 1.6s cubic-bezier(.45,0,.2,1); }
+body.card-open .caption { translate:0 0; }
+:root { --open:1.6s; }
+.letter-view { position:fixed; inset:0; width:100%; height:100%; max-width:none; max-height:none; margin:0; padding:12px; border:0; background:transparent; overflow:hidden; }
+.letter-view[open] { display:flex; align-items:center; justify-content:center; }
+.letter-view::backdrop { background:rgba(43,24,12,.38); }
+.letter-sheet { display:block; width:auto; height:auto; max-width:100%; max-height:calc(100dvh - 24px); object-fit:contain; box-shadow:0 16px 50px #24130b66; cursor:pointer; animation:unfold-letter .8s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes unfold-letter { from { opacity:.35; transform:translate(var(--letter-x,0px),var(--letter-y,0px)) scale(.3) rotate(-3deg); } to { opacity:1; transform:translate(0,0) scale(1) rotate(0); } }
+@media(prefers-reduced-motion:reduce) { .stage,.card,.cover,.caption { transition-duration:.01ms!important; } .letter-sheet { animation:none; } }
+
+
+.letter-view.closing .letter-sheet { pointer-events:none; }
+.letter-view.closing::backdrop { animation:fade-letter-backdrop .8s ease both; }
+@keyframes fold-letter { from { opacity:1; transform:translate(0,0) scale(1) rotate(0); } to { opacity:0; transform:translate(var(--letter-x,0px),var(--letter-y,0px)) scale(.3) rotate(-3deg); } }
+@keyframes fade-letter-backdrop { from { background:rgba(43,24,12,.38); } to { background:rgba(43,24,12,0); } }
+@media(prefers-reduced-motion:reduce) { .letter-view.closing .letter-sheet, .letter-view.closing::backdrop { animation-duration:.01ms; } }
+
+.letter-sheet { animation:none; }
+.blow-ui.manual { bottom:3%; gap:0; }
+.blow-ui.manual .hint, .blow-ui.manual .meter { display:none!important; }
+.blow-ui.manual .tape-btn { width:auto; max-width:100%; white-space:nowrap; font-size:clamp(11px,2.7vw,14px); line-height:1.15; padding:7px 10px; min-height:32px; letter-spacing:0; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
+
+/* Warm off-white background around the card. */
+body { background:#CDBBA5; }
+body::before, body::after { display:none; }
+
+.right { border-radius:0 12px 12px 0; }
+.cover .back, .page2 { border-radius:12px 0 0 12px; }
+.backbtn { margin-top:20px; opacity:0; visibility:hidden; }
+body.card-open .backbtn { opacity:1; visibility:visible; transition:opacity .35s ease 1.6s, visibility 0s linear 1.6s; }
+</style>
   </head>
   <body>
-    <svg class="doodle d1" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 1l3 7 7 .5-5.5 4.5 2 7L12 17l-6.5 3 2-7L2 8.5 9 8z" />
-    </svg>
-    <svg class="doodle d2" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 1l3 7 7 .5-5.5 4.5 2 7L12 17l-6.5 3 2-7L2 8.5 9 8z" />
-    </svg>
-    <svg class="doodle d3" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 1l3 7 7 .5-5.5 4.5 2 7L12 17l-6.5 3 2-7L2 8.5 9 8z" />
-    </svg>
-    <svg
-      class="doodle d4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#2b3a6b"
-      stroke-width="2"
-    >
-      <path
-        d="M12 21s-7-4.5-9.5-9C.8 8.6 2.5 5 6 5c2 0 3.2 1.2 4 2.4C10.8 6.2 12 5 14 5c3.5 0 5.2 3.6 3.5 7-2.5 4.5-9.5 9-9.5 9z"
-      />
-    </svg>
+
+    
+    
+    
+    
 
     <div class="wrap">
       <div class="stage">
@@ -626,7 +678,7 @@
           <!-- right leaf : candles (revealed when the cover opens) -->
           <section class="leaf right">
             <div class="page3" id="page3">
-              <img class="cake" src="/1000012225.png" />
+              <img class="cake" src="./1000012225.png" />
               <div
                 class="flame"
                 id="flame1"
@@ -703,22 +755,24 @@
           <!-- cover leaf : front = photo, back = the letter page -->
           <section class="leaf cover" id="cover">
             <div class="face front">
-              <img src="/1000012222.png" />
+              <img src="./1000012222.png" />
             </div>
             <div class="face back">
               <div class="page2" id="page2">
-                <img class="letter" src="/1000012224.png" />
-                <img class="env" src="/1000012223.png" />
+                  <img class="letter" src="./1000012224.png" />
+                <img class="env" src="./1000012223.png" />
               </div>
             </div>
           </section>
         </div>
       </div>
-      <div class="caption">para Dani ♥</div>
       <button class="backbtn" id="backBtn">‹ vuelve a la portada</button>
     </div>
     <div class="confetti" id="confetti"></div>
 
+    <dialog id="letterView" class="letter-view" aria-label="Carta para Dani. Toca la carta para guardarla.">
+      <img class="letter-sheet" src="./1000012224.png" alt="Carta de cumpleaños para Dani" />
+    </dialog>
     <script>
       ;(function () {
         const card = document.getElementById('card')
@@ -737,6 +791,7 @@
         function openCard() {
           opened = true
           card.classList.add('open')
+          document.body.classList.add('card-open')
           backBtn.style.display = 'inline-block'
           setTimeout(() => {
             if (micReady && !extinguished) startBlowLoop()
@@ -745,6 +800,7 @@
         function closeCard() {
           opened = false
           card.classList.remove('open')
+          document.body.classList.remove('card-open')
           backBtn.style.display = 'none'
           closeLetter()
           stopBlowLoop()
@@ -754,27 +810,76 @@
 
         /* ---- letter ---- */
         const page2 = document.getElementById('page2')
+
+        const letterImage = document.querySelector('.letter')
         let letterOpen = false,
           tuck = null
         page2.addEventListener('click', (e) => {
           e.stopPropagation()
-          letterOpen ? closeLetter() : openLetter()
-        })
-        function openLetter() {
-          letterOpen = true
-          clearTimeout(tuck)
-          page2.classList.add('raised', 'open')
-        }
-        function closeLetter() {
-          if (!page2.classList.contains('open')) {
-            page2.classList.remove('raised')
-            letterOpen = false
+          if (e.target === letterImage || e.target.closest('.letter')) {
+            letterOpen ? closeLetter() : openLetter()
             return
           }
+          letterOpen ? closeLetter() : openLetter()
+        })
+        const letterView = document.getElementById('letterView')
+        letterView.addEventListener('click', closeLetter)
+        let letterClosingTimer = null
+        let letterMotion = null
+        const letterSheet = letterView.querySelector('.letter-sheet')
+        function finishLetterClose() {
+          if (!letterView.classList.contains('closing')) return
+          clearTimeout(letterClosingTimer)
+          letterView.close()
+          letterView.classList.remove('closing')
           letterOpen = false
-          page2.classList.remove('open')
-          tuck = setTimeout(() => page2.classList.remove('raised'), 720)
         }
+        letterView.addEventListener('cancel', event => {
+          event.preventDefault()
+          closeLetter()
+        })
+        letterView.addEventListener('close', () => {
+          clearTimeout(letterClosingTimer)
+          letterView.classList.remove('closing')
+          letterOpen = false
+        })
+        function openLetter() {
+          if (letterView.open) return
+          letterOpen = true
+          const rect = page2.getBoundingClientRect()
+          letterView.style.setProperty('--letter-x', (rect.left + rect.width/2 - innerWidth/2) + 'px')
+          letterView.style.setProperty('--letter-y', (rect.top + rect.height/2 - innerHeight/2) + 'px')
+          letterView.showModal()
+          letterMotion?.cancel()
+          const x = letterView.style.getPropertyValue('--letter-x')
+          const y = letterView.style.getPropertyValue('--letter-y')
+          letterMotion = letterSheet.animate([
+            { opacity:.35, transform:`translate(${x},${y}) scale(.3) rotate(-3deg)` },
+            { opacity:1, transform:'translate(0,0) scale(1) rotate(0)' }
+          ], { duration:matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 800,
+               easing:'cubic-bezier(.2,.7,.2,1)', fill:'both' })
+        }
+        function closeLetter() {
+          if (!letterView.open || letterView.classList.contains('closing')) return
+          letterView.classList.add('closing')
+          // Reverse the same animation instance, including its easing and current progress.
+          letterMotion.reverse()
+          letterMotion.finished.then(finishLetterClose).catch(() => {})
+          letterClosingTimer = setTimeout(finishLetterClose, 850)
+        }
+        function fitCover() {
+          const width = card.offsetWidth / 2
+          const height = card.offsetHeight
+          const view = window.visualViewport
+          const vw = view ? view.width : innerWidth
+          const vh = view ? view.height : innerHeight
+          const scale = Math.max(1, Math.min((vw - 40) / width, (vh - 110) / height, 2.1))
+          document.body.style.setProperty('--cover-zoom', scale)
+          document.body.style.setProperty('--caption-drop', ((scale - 1)*height/2) + 'px')
+        }
+        fitCover()
+        addEventListener('resize', fitCover)
+        window.visualViewport?.addEventListener('resize', fitCover)
 
         /* ---- candles / blow ---- */
         const flames = [
@@ -838,7 +943,10 @@
         }
         function setupFallback() {
           micReady = false
-          micBtn.textContent = '💨 manten presionado para soplar'
+          if (micBtn.classList.contains('hold')) return
+          micBtn.textContent = 'Mantén para soplar'
+          blowUi.classList.add('manual')
+          micBtn.removeEventListener('click', enableMic)
           micBtn.classList.add('hold')
           hint.style.display = 'block'
           hint.textContent = '(micro apagado — presiona y mantén para soplar)'
@@ -850,12 +958,13 @@
           const up = () => {
             holdActive = false
           }
-          micBtn.replaceWith(micBtn.cloneNode(true))
-          const btn = document.getElementById('micBtn')
+          const btn = micBtn
           btn.addEventListener('mousedown', down)
           btn.addEventListener('touchstart', down, { passive: false })
           window.addEventListener('mouseup', up)
           window.addEventListener('touchend', up)
+          window.addEventListener('touchcancel', up)
+          window.addEventListener('blur', up)
           window.addEventListener('keydown', (e) => {
             if (e.code === 'Space') {
               e.preventDefault()
